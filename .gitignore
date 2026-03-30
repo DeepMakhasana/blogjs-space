@@ -1,0 +1,8 @@
+node_modules
+dist
+.keystone/
+keystone.db
+*.log
+
+.env*
+public

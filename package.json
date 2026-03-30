@@ -1,0 +1,21 @@
+{
+  "name": "writerjs",
+  "version": "1.0.0",
+  "description": "Client SDK for fetching project blogs from writerjs using API key",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format cjs,esm"
+  },
+  "dependencies": {
+    "@apollo/client": "^4.1.6",
+    "cross-fetch": "^4.1.0",
+    "graphql": "^16.13.2"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  }
+}
