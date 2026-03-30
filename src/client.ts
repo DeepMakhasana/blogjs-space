@@ -6,19 +6,11 @@ import {
 
 import fetch from "cross-fetch";
 import { Blog, BlogClientOptions, PaginationOptions, PaginatedResult } from "./types";
-import { GET_BLOGS, GET_BLOG_BY_SLUG, SEARCH_BLOGS } from "./queries";
-
-type BlogsQueryResult = {
-  blogs: Blog[];
-};
+import { GET_BLOG_BY_SLUG, SEARCH_BLOGS } from "./queries";
 
 type SearchBlogsQueryResult = {
   blogs: Blog[];
-  blogsConnection: {
-    aggregate: {
-      count: number;
-    };
-  };
+  blogsCount: number;
 };
 
 type BlogBySlugQueryResult = {
@@ -45,43 +37,25 @@ export class BlogClient {
     });
   }
 
-  async getBlogs(): Promise<Blog[]> {
-    const { data } = await this.client.query<BlogsQueryResult>({
-      query: GET_BLOGS
-    });
-
-    return data?.blogs ?? [];
-  }
-
-  async getBlogBySlug(slug: string): Promise<(Blog & { content?: string }) | null> {
-
-    const { data } = await this.client.query<BlogBySlugQueryResult>({
-      query: GET_BLOG_BY_SLUG,
-      variables: { slug }
-    });
-
-    return data?.blogs?.[0] || null;
-  }
-
-  async searchBlogs(
-    query?: string,
+  async getBlogs(
     pagination: PaginationOptions = {}
   ): Promise<PaginatedResult<Blog>> {
     const page = Math.max(pagination.page ?? 1, 1);
     const limit = Math.max(Math.min(pagination.limit ?? 10, 100), 1);
     const skip = (page - 1) * limit;
+    const query = (pagination.query ?? "").trim().replace(/\s+/g, " ");
 
     const { data } = await this.client.query<SearchBlogsQueryResult>({
       query: SEARCH_BLOGS,
       variables: {
-        query: query ?? "",
+        query,
         skip,
         take: limit
       }
     });
 
     const blogs = data?.blogs ?? [];
-    const total = data?.blogsConnection?.aggregate?.count ?? 0;
+    const total = data?.blogsCount ?? 0;
     const totalPages = Math.ceil(total / limit);
     const hasMore = page < totalPages;
 
@@ -95,5 +69,16 @@ export class BlogClient {
         hasMore
       }
     };
+  }
+
+
+  async getBlogBySlug(slug: string): Promise<(Blog & { content?: string }) | null> {
+
+    const { data } = await this.client.query<BlogBySlugQueryResult>({
+      query: GET_BLOG_BY_SLUG,
+      variables: { slug }
+    });
+
+    return data?.blogs?.[0] || null;
   }
 }

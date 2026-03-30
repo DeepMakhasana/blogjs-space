@@ -3,7 +3,13 @@ import { gql } from "@apollo/client";
 export const SEARCH_BLOGS = gql`
 query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
   blogs(
-    where: { title: { contains: $query } }
+    where: {
+      OR: [
+        { title: { contains: $query, mode: insensitive } }
+        { descroption: { contains: $query, mode: insensitive } }
+        { slug: { contains: $query, mode: insensitive } }
+      ]
+    }
     orderBy: { createdAt: desc }
     skip: $skip
     take: $take
@@ -15,11 +21,15 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
     readTime
     publishedAt
   }
-  blogsConnection(where: { title: { contains: $query } }) {
-    aggregate {
-      count
+  blogsCount(
+    where: {
+      OR: [
+        { title: { contains: $query, mode: insensitive } }
+        { descroption: { contains: $query, mode: insensitive } }
+        { slug: { contains: $query, mode: insensitive } }
+      ]
     }
-  }
+  )
 }
 `;
 

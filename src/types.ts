@@ -16,6 +16,7 @@ export interface BlogClientOptions {
 export interface PaginationOptions {
   page?: number; // 1-indexed, defaults to 1
   limit?: number; // items per page, defaults to 10
+  query?: string; // search query, optional
 }
 
 export interface PaginatedResult<T> {
