@@ -9,11 +9,6 @@
   "scripts": {
     "build": "tsup src/index.ts --dts --format cjs,esm"
   },
-  "dependencies": {
-    "@apollo/client": "^4.1.6",
-    "cross-fetch": "^4.1.0",
-    "graphql": "^16.13.2"
-  },
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^6.0.2"

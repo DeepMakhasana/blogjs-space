@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client";
-
-export const SEARCH_BLOGS = gql`
+export const SEARCH_BLOGS = `
 query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
   blogs(
     where: {
@@ -33,7 +31,7 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
 }
 `;
 
-export const GET_BLOGS = gql`
+export const GET_BLOGS = `
 query GetBlogs {
   blogs(orderBy: { createdAt: desc }) {
     id
@@ -46,7 +44,7 @@ query GetBlogs {
 }
 `;
 
-export const GET_BLOG_BY_SLUG = gql`
+export const GET_BLOG_BY_SLUG = `
 query GetBlog($slug: String!) {
   blogs(where: { slug: { equals: $slug } }) {
     id

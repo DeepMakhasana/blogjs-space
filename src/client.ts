@@ -1,10 +1,3 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink
-} from "@apollo/client";
-
-import fetch from "cross-fetch";
 import { Blog, BlogClientOptions, PaginationOptions, PaginatedResult } from "./types";
 import { GET_BLOG_BY_SLUG, SEARCH_BLOGS } from "./queries";
 
@@ -18,23 +11,50 @@ type BlogBySlugQueryResult = {
 };
 
 export class BlogClient {
-
-  private client: ApolloClient;
+  private endpoint: string;
+  private apiKey: string;
 
   constructor(options: BlogClientOptions) {
+    this.endpoint = options.endpoint;
+    this.apiKey = options.apiKey;
+  }
 
-    const link = new HttpLink({
-      uri: options.endpoint,
-      fetch,
+  private async request<T>(
+    query: string,
+    variables?: Record<string, unknown>
+  ): Promise<T> {
+    const response = await fetch(this.endpoint, {
+      method: "POST",
       headers: {
-        Authorization: options.apiKey
-      }
+        "content-type": "application/json",
+        Authorization: this.apiKey
+      },
+      body: JSON.stringify({ query, variables })
     });
 
-    this.client = new ApolloClient({
-      link,
-      cache: new InMemoryCache()
-    });
+    if (!response.ok) {
+      const details = await response.text();
+      const suffix = details ? `: ${details}` : "";
+      throw new Error(
+        `GraphQL request failed with ${response.status} ${response.statusText}${suffix}`
+      );
+    }
+
+    const payload = (await response.json()) as {
+      data?: T;
+      errors?: Array<{ message: string }>;
+    };
+
+    if (payload.errors?.length) {
+      const message = payload.errors.map((error) => error.message).join("; ");
+      throw new Error(`GraphQL errors: ${message}`);
+    }
+
+    if (!payload.data) {
+      throw new Error("GraphQL response missing data.");
+    }
+
+    return payload.data;
   }
 
   async getBlogs(
@@ -45,13 +65,10 @@ export class BlogClient {
     const skip = (page - 1) * limit;
     const query = (pagination.query ?? "").trim().replace(/\s+/g, " ");
 
-    const { data } = await this.client.query<SearchBlogsQueryResult>({
-      query: SEARCH_BLOGS,
-      variables: {
-        query,
-        skip,
-        take: limit
-      }
+    const data = await this.request<SearchBlogsQueryResult>(SEARCH_BLOGS, {
+      query,
+      skip,
+      take: limit
     });
 
     const blogs = data?.blogs ?? [];
@@ -74,9 +91,8 @@ export class BlogClient {
 
   async getBlogBySlug(slug: string): Promise<(Blog & { content?: string }) | null> {
 
-    const { data } = await this.client.query<BlogBySlugQueryResult>({
-      query: GET_BLOG_BY_SLUG,
-      variables: { slug }
+    const data = await this.request<BlogBySlugQueryResult>(GET_BLOG_BY_SLUG, {
+      slug
     });
 
     return data?.blogs?.[0] || null;
