@@ -11,11 +11,10 @@ type BlogBySlugQueryResult = {
 };
 
 export class BlogClient {
-  private endpoint: string;
+  private endpoint: string = "http://localhost:3000/api/graphql";
   private apiKey: string;
 
   constructor(options: BlogClientOptions) {
-    this.endpoint = options.endpoint;
     this.apiKey = options.apiKey;
   }
 

@@ -25,7 +25,6 @@ npm install writerjs
 import { BlogClient } from "writerjs";
 
 const client = new BlogClient({
-  endpoint: "http://localhost:3000/api/graphql",
   apiKey: "d0178214-0141-44e2-8d8f-6576ea522c20"
 });
 ```

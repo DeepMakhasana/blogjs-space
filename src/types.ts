@@ -9,7 +9,6 @@ export interface Blog {
 }
 
 export interface BlogClientOptions {
-  endpoint: string;
   apiKey: string;
 }
 
