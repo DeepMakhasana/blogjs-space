@@ -1,6 +1,6 @@
-# WriterJS - Blog Client SDK
+# @adiths/blogjs - Blog Client SDK
 
-A lightweight, type-safe GraphQL client for fetching blogs from WriterJS CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
+A lightweight, type-safe GraphQL client for fetching blogs from @adiths/blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
 
 ## Features
 
@@ -14,7 +14,7 @@ A lightweight, type-safe GraphQL client for fetching blogs from WriterJS CMS. Su
 ## Installation
 
 ```bash
-npm install writerjs
+npm install @adiths/blogjs
 ```
 
 ## Getting Started
@@ -22,7 +22,7 @@ npm install writerjs
 ### Initialize the Client
 
 ```typescript
-import { BlogClient } from "writerjs";
+import { BlogClient } from "@adiths/blogjs";
 
 const client = new BlogClient({
   apiKey: "d0178214-0141-44e2-8d8f-6576ea522c20"
