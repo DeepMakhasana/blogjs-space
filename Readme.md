@@ -1,6 +1,6 @@
 # @adiths/blogjs - Blog Client SDK
 
-A lightweight, type-safe GraphQL client for fetching blogs from @adiths/blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
+A lightweight, type-safe BlogClient for fetching blogs from @adiths/blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
 
 ## Features
 
@@ -125,9 +125,20 @@ interface Blog {
   title: string;
   slug: string;
   descroption?: string;
-  image?: string;
+  image?: {
+    url?: string | null;
+  } | null;
   readTime?: number;
   publishedAt?: string;
+  author: {
+    name: string;
+  };
+  categories?: {
+    name: string;
+  };
+  tags?: {
+    name: string;
+  }[];
 }
 
 interface PaginationOptions {

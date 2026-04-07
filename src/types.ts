@@ -3,9 +3,20 @@ export interface Blog {
   title: string;
   slug: string;
   descroption?: string;
-  image?: string;
+  image?: {
+    url?: string | null;
+  } | null;
   readTime?: number;
   publishedAt?: string;
+  author: {
+    name: string;
+  };
+  categories?: {
+    name: string;
+  };
+  tags?: {
+    name: string;
+  }[];
 }
 
 export interface BlogClientOptions {

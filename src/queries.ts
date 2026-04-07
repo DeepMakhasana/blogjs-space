@@ -15,9 +15,21 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
     id
     title
     slug
+    image {
+      url
+    }
     descroption
     readTime
     publishedAt
+    author {
+      name
+    }
+    categories {
+      name
+    }
+    tags {
+      name
+    }
   }
   blogsCount(
     where: {
@@ -37,9 +49,21 @@ query GetBlogs {
     id
     title
     slug
+    image {
+      url
+    }
     descroption
     readTime
     publishedAt
+    author {
+      name
+    }
+    categories {
+      name
+    }
+    tags {
+      name
+    }
   }
 }
 `;
@@ -50,10 +74,22 @@ query GetBlog($slug: String!) {
     id
     title
     slug
+    image {
+      url
+    }
     descroption
     content
     readTime
     publishedAt
+    author {
+      name
+    }
+    categories {
+      name
+    }
+    tags {
+      name
+    }
   }
 }
 `;
