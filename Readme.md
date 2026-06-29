@@ -1,15 +1,17 @@
-# blogjs - Blog Client SDK
+# blogjs
 
-A lightweight, type-safe BlogClient for fetching blogs from blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
+A lightweight, type-safe JavaScript/TypeScript SDK for fetching blog content from [blogjs.space](https://blogjs.space) and easily retrieve blogs, search content, and paginate results using a simple API.
 
 ## Features
 
-- 🔍 **Full-Text Search** — Search across blog title, description, and slug fields
-- 🔤 **Case-Insensitive Search** — Find blogs regardless of letter casing
-- 📖 **Pagination Support** — Built-in offset-based pagination with metadata
-- 🏷️ **Slug-Based Retrieval** — Quickly fetch individual blogs by slug
-- 📦 **TypeScript Support** — Fully typed API with comprehensive type definitions
-- ⚡ **Apollo Client Integration** — Leverages Apollo Client for GraphQL queries
+* 🚀 Simple setup with an API key
+* 🔍 Search blogs by title, description, or slug
+* 📄 Built-in pagination
+* 🏷️ Fetch blogs by slug
+* 📦 Fully typed with TypeScript
+* ⚡ Powered by GraphQL & Apollo Client
+
+---
 
 ## Installation
 
@@ -17,109 +19,156 @@ A lightweight, type-safe BlogClient for fetching blogs from blogjs CMS. Supports
 npm install blogjs
 ```
 
-## Getting Started
+---
 
-### Initialize the Client
+## Quick Start
 
-```typescript
+```ts
 import { BlogClient } from "blogjs";
 
 const client = new BlogClient({
-  apiKey: "d0178214-0141-44e2-8d8f-6576ea522c20"
+  apiKey: "YOUR_API_KEY",
 });
 ```
+
+---
 
 ## Usage
 
-### Get All Blogs (with default pagination)
+### Get Latest Blogs
 
-Returns the first 10 blogs ordered by creation date (newest first):
+```ts
+const blogs = await client.getBlogs();
 
-```typescript
-const result = await client.getBlogs();
-
-console.log(result.data);           // Blog[]
-console.log(result.pagination.total); // Total number of blogs
+console.log(blogs.data);
+console.log(blogs.pagination);
 ```
 
-### Search Blogs (case-insensitive)
+---
 
-Search across blog titles, descriptions, and slugs. Search is case-insensitive by default:
+### Search Blogs
 
-```typescript
-const result = await client.getBlogs({
-  query: "typescript",  // Searches: "Typescript", "TYPESCRIPT", "typescript"
+```ts
+const blogs = await client.getBlogs({
+  query: "react",
   page: 1,
-  limit: 10
+  limit: 10,
 });
 
-console.log(result.data);  // Matching blogs array
+console.log(blogs.data);
 ```
 
-### Retrieve Specific Blog by Slug
+Search is case-insensitive and matches:
 
-Fetch a single blog along with its full content:
+* Title
+* Description
+* Slug
 
-```typescript
-const blog = await client.getBlogBySlug("first-blog");
+---
+
+### Get a Blog by Slug
+
+```ts
+const blog = await client.getBlogBySlug("my-first-blog");
 
 if (blog) {
   console.log(blog.title);
-  console.log(blog.content);  // Full blog content
+  console.log(blog.content);
 }
 ```
 
-### Advanced Pagination
+---
 
-```typescript
+## Pagination
+
+```ts
 const result = await client.getBlogs({
-  query: "react",
   page: 2,
-  limit: 20
+  limit: 20,
 });
+```
 
-// Response structure:
+Example response:
+
+```ts
 {
-  data: Blog[],
+  data: [...],
   pagination: {
-    page: 2,              // Current page
-    limit: 20,            // Items per page
-    total: 125,           // Total blogs matching query
-    totalPages: 7,        // Total pages available
-    hasMore: true         // Whether more pages exist
+    page: 2,
+    limit: 20,
+    total: 125,
+    totalPages: 7,
+    hasMore: true
   }
 }
 ```
 
-## API Reference
+---
 
-### `getBlogs(pagination?: PaginationOptions): Promise<PaginatedResult<Blog>>`
+# API
 
-Fetch blogs with optional search and pagination.
+## `getBlogs(options?)`
 
-**Parameters:**
-- `pagination.query?` (string) — Optional search term (searches title, description, slug)
-- `pagination.page?` (number) — 1-indexed page number (default: 1)
-- `pagination.limit?` (number) — Items per page, max 100 (default: 10)
+Fetch blogs with optional pagination and search.
 
-**Returns:** `PaginatedResult<Blog>` with blogs array and pagination metadata
+```ts
+await client.getBlogs({
+  query?: string,
+  page?: number,
+  limit?: number
+});
+```
+
+| Option  | Type     | Default | Description                           |
+| ------- | -------- | ------- | ------------------------------------- |
+| `query` | `string` | -       | Search by title, description, or slug |
+| `page`  | `number` | `1`     | Page number                           |
+| `limit` | `number` | `10`    | Blogs per page (max `100`)            |
+
+Returns:
+
+```ts
+PaginatedResult<Blog>
+```
 
 ---
 
-### `getBlogBySlug(slug: string): Promise<Blog & { content?: string } | null>`
+## `getBlogBySlug(slug)`
 
-Fetch a specific blog by its slug with full content.
+Fetch a single blog including its full content.
 
-**Parameters:**
-- `slug` (string) — The blog's URL-friendly slug identifier
+```ts
+await client.getBlogBySlug("my-blog");
+```
 
-**Returns:** Blog object with content field, or null if not found
+Returns:
+
+```ts
+Blog | null
+```
 
 ---
 
-### Types
+# Types
 
-```typescript
+```ts
+interface PaginationOptions {
+  page?: number;
+  limit?: number;
+  query?: string;
+}
+
+interface PaginatedResult<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
+}
+
 interface Blog {
   id: string;
   title: string;
@@ -140,82 +189,57 @@ interface Blog {
     name: string;
   }[];
 }
-
-interface PaginationOptions {
-  page?: number;        // 1-indexed (default: 1)
-  limit?: number;       // Items per page, max 100 (default: 10)
-  query?: string;       // Full-text search term (optional)
-}
-
-interface PaginatedResult<T> {
-  data: T[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-    hasMore: boolean;
-  };
-}
 ```
+
+---
 
 ## Examples
 
-### Example 1: Fetch Latest 5 Blogs
+### Latest 5 Blogs
 
-```typescript
-const result = await client.getBlogs({ limit: 5 });
-console.log(result.data);  // 5 most recent blogs
+```ts
+const blogs = await client.getBlogs({
+  limit: 5,
+});
 ```
 
-### Example 2: Search with Pagination
+### Search with Pagination
 
-```typescript
-const result = await client.getBlogs({
+```ts
+const blogs = await client.getBlogs({
   query: "nodejs",
   page: 1,
-  limit: 15
+  limit: 15,
 });
 
-console.log(result.data);              // First 15 Node.js related blogs
-console.log(result.pagination.total);  // Total matching blogs
-console.log(result.pagination.hasMore); // Check if more pages available
+console.log(blogs.pagination.total);
+console.log(blogs.pagination.hasMore);
 ```
 
-### Example 3: Handle Pagination UI
-
-```typescript
-async function loadMoreBlogs(currentPage: number) {
-  const result = await client.getBlogs({
-    query: "design",
-    page: currentPage,
-    limit: 10
-  });
-
-  if (result.pagination.hasMore) {
-    // Show "Load More" button
-  }
-
-  return result.data;
-}
-```
+---
 
 ## Search Behavior
 
-- **Case-Insensitive** — Queries are matched regardless of letter casing
-- **Multi-Field** — Searches across title, description, and slug
-- **Whitespace Normalization** — Extra spaces are automatically cleaned
-- **Partial Matching** — Returns blogs that contain the search term anywhere in the indexed fields
+* Case-insensitive
+* Partial matching
+* Searches title, description, and slug
+* Automatically trims extra whitespace
+
+---
 
 ## Error Handling
 
-```typescript
+```ts
 try {
-  const result = await client.getBlogs({ query: "react" });
+  const blogs = await client.getBlogs({
+    query: "react",
+  });
 } catch (error) {
-  console.error("Failed to fetch blogs:", error);
+  console.error(error);
 }
 ```
+
+---
 
 ## License
 
