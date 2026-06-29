@@ -1,4 +1,4 @@
-# blogjs
+# blogjs-space
 
 A lightweight, type-safe JavaScript/TypeScript SDK for fetching blog content from [blogjs.space](https://blogjs.space) and easily retrieve blogs, search content, and paginate results using a simple API.
 
@@ -16,7 +16,7 @@ A lightweight, type-safe JavaScript/TypeScript SDK for fetching blog content fro
 ## Installation
 
 ```bash
-npm install blogjs
+npm install blogjs-space
 ```
 
 ---
@@ -24,7 +24,7 @@ npm install blogjs
 ## Quick Start
 
 ```ts
-import { BlogClient } from "blogjs";
+import { BlogClient } from "blogjs-space";
 
 const client = new BlogClient({
   apiKey: "YOUR_API_KEY",

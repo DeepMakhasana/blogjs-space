@@ -1,5 +1,5 @@
 {
-  "name": "blogjs",
+  "name": "blogjs-space",
   "version": "1.0.0",
   "description": "Client SDK for fetching project blogs from blogjs using API key",
   "main": "dist/index.js",
@@ -17,6 +17,7 @@
   ],
   "keywords": [
     "blogjs",
+    "blogjs-space",
     "blog",
     "cms",
     "headless",
