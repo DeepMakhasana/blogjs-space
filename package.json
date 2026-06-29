@@ -37,10 +37,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DeepMakhasana/blogjs.git"
+    "url": "git+https://github.com/DeepMakhasana/blogjs-space.git"
   },
   "homepage": "https://blogjs.space",
   "bugs": {
-    "url": "https://github.com/DeepMakhasana/blogjs/issues"
+    "url": "https://github.com/DeepMakhasana/blogjs-space/issues"
   }
 }
