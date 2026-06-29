@@ -4,7 +4,7 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
     where: {
       OR: [
         { title: { contains: $query, mode: insensitive } }
-        { descroption: { contains: $query, mode: insensitive } }
+        { description: { contains: $query, mode: insensitive } }
         { slug: { contains: $query, mode: insensitive } }
       ]
     }
@@ -18,7 +18,7 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
     image {
       url
     }
-    descroption
+    description
     readTime
     publishedAt
     author {
@@ -35,7 +35,7 @@ query SearchBlogs($query: String, $skip: Int!, $take: Int!) {
     where: {
       OR: [
         { title: { contains: $query, mode: insensitive } }
-        { descroption: { contains: $query, mode: insensitive } }
+        { description: { contains: $query, mode: insensitive } }
         { slug: { contains: $query, mode: insensitive } }
       ]
     }
@@ -52,7 +52,7 @@ query GetBlogs {
     image {
       url
     }
-    descroption
+    description
     readTime
     publishedAt
     author {
@@ -77,7 +77,7 @@ query GetBlog($slug: String!) {
     image {
       url
     }
-    descroption
+    description
     content
     readTime
     publishedAt
