@@ -1,6 +1,6 @@
-# @adiths/blogjs - Blog Client SDK
+# blogjs - Blog Client SDK
 
-A lightweight, type-safe BlogClient for fetching blogs from @adiths/blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
+A lightweight, type-safe BlogClient for fetching blogs from blogjs CMS. Supports advanced search, pagination, and filtering with a clean, modern API.
 
 ## Features
 
@@ -14,7 +14,7 @@ A lightweight, type-safe BlogClient for fetching blogs from @adiths/blogjs CMS. 
 ## Installation
 
 ```bash
-npm install @adiths/blogjs
+npm install blogjs
 ```
 
 ## Getting Started
@@ -22,7 +22,7 @@ npm install @adiths/blogjs
 ### Initialize the Client
 
 ```typescript
-import { BlogClient } from "@adiths/blogjs";
+import { BlogClient } from "blogjs";
 
 const client = new BlogClient({
   apiKey: "d0178214-0141-44e2-8d8f-6576ea522c20"
