@@ -11,7 +11,7 @@ type BlogBySlugQueryResult = {
 };
 
 export class BlogClient {
-  private endpoint: string = "http://localhost:3000/api/graphql";
+  private endpoint: string = "https://blogapi.deepmakhasana.me/api/graphql";
   private apiKey: string;
 
   constructor(options: BlogClientOptions) {

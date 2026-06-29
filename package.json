@@ -5,12 +5,39 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "files": ["dist"],
+  "keywords": [
+    "blogjs",
+    "blog",
+    "cms",
+    "headless",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Deep Makhasana",
+  "license": "MIT",
   "scripts": {
-    "build": "tsup src/index.ts --dts --format cjs,esm"
+    "build": "tsup src/index.ts --dts --format cjs,esm --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^6.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeepMakhasana/blogjs"
+  },
+  "homepage": "https://blogjs.space",
+  "bugs": {
+    "url": "https://github.com/DeepMakhasana/blogjs/issues"
   }
 }
